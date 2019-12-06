@@ -98,6 +98,30 @@ eval("__webpack_require__.r(__webpack_exports__);\n/* harmony import */ var _src
 
 /***/ }),
 
+/***/ "./src/db/food.js":
+/*!************************!*\
+  !*** ./src/db/food.js ***!
+  \************************/
+/*! exports provided: productModel */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, \"productModel\", function() { return productModel; });\n/* harmony import */ var mongoose__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! mongoose */ \"mongoose\");\n/* harmony import */ var mongoose__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(mongoose__WEBPACK_IMPORTED_MODULE_0__);\n\r\n\r\nconst productSchema = new mongoose__WEBPACK_IMPORTED_MODULE_0___default.a.Schema({\r\n    _id: String,\r\n    name: String,\r\n    brand: String,\r\n    bar_code: Number,\r\n    grade: Number,\r\n    quantity: String,\r\n    pictures: [String],\r\n    ingredients: [Object]\r\n});\r\n\r\nconst productModel = mongoose__WEBPACK_IMPORTED_MODULE_0___default.a.model('product', productSchema, 'products')\n\n//# sourceURL=webpack:///./src/db/food.js?");
+
+/***/ }),
+
+/***/ "./src/db/index.js":
+/*!*************************!*\
+  !*** ./src/db/index.js ***!
+  \*************************/
+/*! exports provided: db, default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, \"db\", function() { return db; });\n/* harmony import */ var mongoose__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! mongoose */ \"mongoose\");\n/* harmony import */ var mongoose__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(mongoose__WEBPACK_IMPORTED_MODULE_0__);\n\r\n\r\nconst connect = () => {\r\n    mongoose__WEBPACK_IMPORTED_MODULE_0___default.a.connect('mongodb://localhost:27017/yuka-miw', \r\n    { autoReconnect: true, useNewUrlParser: true});\r\n}\r\n\r\nlet db;\r\n\r\n/* harmony default export */ __webpack_exports__[\"default\"] = (() => {\r\n    return new Promise((resolve, reject) => {\r\n        db = mongoose__WEBPACK_IMPORTED_MODULE_0___default.a.connection;\r\n\r\n        // Evenements\r\n        db.on('connecting', () => {\r\n            console.log(\"Connexion à Mongo....\");\r\n        });\r\n\r\n        db.on('error', (err) => {\r\n            mongoose__WEBPACK_IMPORTED_MODULE_0___default.a.disconnect();\r\n            reject(err);\r\n            throw new Error(err);\r\n        });\r\n\r\n        db.once('open', () => {\r\n            console.log('Connecté à mongo');\r\n            resolve();\r\n        });\r\n\r\n        db.on('disconnected', () => {\r\n            setTimeout(() => {\r\n                try {\r\n                    connect();\r\n                } catch(err){\r\n                    throw new Error('Cannot reconnect');\r\n                }\r\n            }, 5000)\r\n        })\r\n\r\n        connect();\r\n    });\r\n});\n\n//# sourceURL=webpack:///./src/db/index.js?");
+
+/***/ }),
+
 /***/ "./src/index.js":
 /*!**********************!*\
   !*** ./src/index.js ***!
@@ -106,7 +130,19 @@ eval("__webpack_require__.r(__webpack_exports__);\n/* harmony import */ var _src
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-eval("__webpack_require__.r(__webpack_exports__);\n/* harmony import */ var express__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! express */ \"express\");\n/* harmony import */ var express__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(express__WEBPACK_IMPORTED_MODULE_0__);\n\r\n\r\n/* harmony default export */ __webpack_exports__[\"default\"] = (() => {\r\n    try {\r\n        const app = express__WEBPACK_IMPORTED_MODULE_0___default()();\r\n        const port = 3000;\r\n\r\n        app.listen(port, () => {\r\n            console.log(\"salut rudy\");\r\n        });\r\n    } catch(e) {\r\n        console.error(e);\r\n    }\r\n});\n\n//# sourceURL=webpack:///./src/index.js?");
+eval("__webpack_require__.r(__webpack_exports__);\n/* harmony import */ var express__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! express */ \"express\");\n/* harmony import */ var express__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(express__WEBPACK_IMPORTED_MODULE_0__);\n/* harmony import */ var _routes__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./routes */ \"./src/routes/index.js\");\n/* harmony import */ var _db__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./db */ \"./src/db/index.js\");\n\r\n\r\n\r\n\r\n/* harmony default export */ __webpack_exports__[\"default\"] = (async () => {\r\n    try {\r\n        const app = express__WEBPACK_IMPORTED_MODULE_0___default()();\r\n\r\n        await Object(_db__WEBPACK_IMPORTED_MODULE_2__[\"default\"])();\r\n        \r\n        Object(_routes__WEBPACK_IMPORTED_MODULE_1__[\"default\"])(app);\r\n\r\n        app.listen(3000, () => {\r\n            console.log(3000, \"development\");\r\n        });\r\n    } catch(e) {\r\n        console.error(e);\r\n    }\r\n});\n\n//# sourceURL=webpack:///./src/index.js?");
+
+/***/ }),
+
+/***/ "./src/routes/index.js":
+/*!*****************************!*\
+  !*** ./src/routes/index.js ***!
+  \*****************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+eval("__webpack_require__.r(__webpack_exports__);\n/* harmony import */ var _db_food__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../db/food */ \"./src/db/food.js\");\n\r\n\r\n/* harmony default export */ __webpack_exports__[\"default\"] = ((app) => {\r\n    \r\n    app.get('/products', async (req, res) => {\r\n        try {\r\n            const products = await _db_food__WEBPACK_IMPORTED_MODULE_0__[\"productModel\"].find();\r\n            res.status(200).json(products);\r\n        } catch(err){\r\n            console.log(err.message);\r\n            return res.status(500).json({\r\n                'error': true,\r\n                'message': 'Error resquesting products'\r\n            })\r\n        }\r\n    })\r\n\r\n    app.get('/product/:bar_code', async (req, res) => {\r\n        const barCode = req.params.bar_code\r\n\r\n        try {\r\n            const product = await _db_food__WEBPACK_IMPORTED_MODULE_0__[\"productModel\"].findOne({ bar_code: barCode });\r\n            if(product){\r\n                res.status(200).json(product);\r\n            }\r\n            else{\r\n                res.status(404).json({\r\n                    'error':true,\r\n                    'message': `No product with barCode ${barCode}`\r\n                })\r\n            }\r\n        } catch(err){\r\n            console.log(err.message);\r\n            return res.status(500).json({\r\n                'error': true,\r\n                'message': `Error resquesting product ${barCode}`\r\n            })\r\n        }\r\n    })\r\n\r\n});\n\n//# sourceURL=webpack:///./src/routes/index.js?");
 
 /***/ }),
 
@@ -118,6 +154,17 @@ eval("__webpack_require__.r(__webpack_exports__);\n/* harmony import */ var expr
 /***/ (function(module, exports) {
 
 eval("module.exports = require(\"express\");\n\n//# sourceURL=webpack:///external_%22express%22?");
+
+/***/ }),
+
+/***/ "mongoose":
+/*!***************************!*\
+  !*** external "mongoose" ***!
+  \***************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+eval("module.exports = require(\"mongoose\");\n\n//# sourceURL=webpack:///external_%22mongoose%22?");
 
 /***/ })
 
